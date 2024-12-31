@@ -14,17 +14,19 @@ pygame.font.init()
 FONT = pygame.font.Font(None, 36)
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Beneath the Surface")
+pygame.display.set_caption("Beneath the Surface") 
 
 STATE_LOBBY = "lobby"
 STATE_STAGE = "stage"
-STATE_LOADING = "loading"
-STATE_1 = "1"
+STATE_CASE1 = "1"
 STATE_END = "end"
 current_state = STATE_LOBBY
 
 lobby_background = pygame.image.load("lobby.png")
 lobby_background = pygame.transform.scale(lobby_background, (WIDTH, HEIGHT))
+
+stage_background = pygame.image.load("stage.png")
+stage_background = pygame.transform.scale(stage_background, (WIDTH, HEIGHT))
 
 start_button_rect = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 - 20, 200, 40)
 exit_button_rect = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 + 50 - 20, 200, 40)
@@ -46,10 +48,8 @@ def draw_lobby_screen():
     screen.blit(start_button, (start_button_rect.centerx - start_button.get_width() // 2, start_button_rect.centery - start_button.get_height() // 2))
     screen.blit(exit_button, (exit_button_rect.centerx - exit_button.get_width() // 2, exit_button_rect.centery - exit_button.get_height() // 2))
 
-def draw_loading_screen():
-    screen.fill(GRAY)
-    text = FONT.render("Entering...", True, BLACK)
-    screen.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2))
+def draw_stage_screen():
+    screen.blit(stage_background, (0, 0))
 
 def main():
     global current_state
@@ -65,14 +65,14 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if current_state == STATE_LOBBY:
                     if start_button_rect.collidepoint(event.pos):
-                        current_state = STATE_LOADING
+                        current_state = STATE_STAGE
                     elif exit_button_rect.collidepoint(event.pos):
                         running = False
 
         if current_state == STATE_LOBBY:
             draw_lobby_screen()
-        elif current_state == STATE_LOADING:
-            draw_loading_screen()
+        elif current_state == STATE_STAGE:
+            draw_stage_screen()
 
         pygame.display.flip()
         clock.tick(30)
